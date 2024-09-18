@@ -24,7 +24,7 @@
     @routes
 </head>
 
-<body class="font-Montserrat">
+<body class="font-Montserrat bg-slate-100 text-slate-900 dark:bg-slate-700 dark:text-white">
     @inertia
 </body>
 

@@ -1,5 +1,6 @@
 <script setup>
 import Card from "../Components/Card.vue";
+import PaginationLinks from "../Components/PaginationLinks.vue";
 
 defineProps({
   listings: Object,
@@ -14,6 +15,9 @@ defineProps({
       <div v-for="listing in listings.data" :key="listing.id">
         <Card :listing="listing" />
       </div>
+    </div>
+    <div class="mt-8">
+      <PaginationLinks :paginator="listings" />
     </div>
   </div>
 </template>

@@ -17,7 +17,7 @@ class ListingController extends Controller
     {
 
         $listings = Listing::with('user')
-        ->filter(request(['search']))
+        ->filter(request(['search', 'user_id']))
         ->latest()
         ->paginate(6)
         ->withQueryString();

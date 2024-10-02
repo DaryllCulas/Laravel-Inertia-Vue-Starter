@@ -22,12 +22,41 @@ const search = () => {
     tag: params.tag,
   });
 };
+
+const username = params.user_id
+  ? props.listings.data.find((i) => i.user_id === Number(params.user_id)).user.name
+  : null;
 </script>
 
 <template>
   <Head title="Latest Listings" />
   <div class="flex items-center justify-between mb-4">
-    <div>Filters</div>
+    <div class="flex items-center gap-2">
+      <Link
+        class="px-2 py-1 rounded-md bg-indigo-500 text-white flex items-center gap-2"
+        v-if="params.tag"
+        :href="route('home', { ...params, tag: null, page: null })"
+        >{{ params.tag }}
+
+        <i class="fa-solid fa-xmark"></i>
+      </Link>
+      <Link
+        class="px-2 py-1 rounded-md bg-indigo-500 text-white flex items-center gap-2"
+        v-if="params.search"
+        :href="route('home', { ...params, search: null, page: null })"
+        >{{ params.search }}
+
+        <i class="fa-solid fa-xmark"></i>
+      </Link>
+      <Link
+        class="px-2 py-1 rounded-md bg-indigo-500 text-white flex items-center gap-2"
+        v-if="params.user_id"
+        :href="route('home', { ...params, user_id: null, page: null })"
+        >{{ username }}
+
+        <i class="fa-solid fa-xmark"></i>
+      </Link>
+    </div>
     <div class="w-1/4">
       <form @submit.prevent="search">
         <InputField

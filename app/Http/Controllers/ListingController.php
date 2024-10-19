@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreListingRequest;
-use App\Http\Requests\UpdateListingRequest;
 use App\Models\Listing;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class ListingController extends Controller
@@ -43,9 +42,40 @@ class ListingController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreListingRequest $request)
+    public function store(Request $request)
     {
-        //
+        // $newTags = explode(',', $request->tags); // Split the string into an array
+        // $newTags = array_map('trim', $newTags); // Remove leading/trailing whitespace
+        // $newTags = array_filter($newTags); // Iterate over the array and remove empty values
+        // $newTags = array_unique($newTags); // Remove duplicate values
+        // $newTags = implode(',',$newTags); // Join the array back into a string
+
+
+
+
+
+
+        $fields = $request->validate([
+            'title' => ['required', 'max:255'],
+            'desc' => ['required'],
+            'tags' => ['nullable', 'string'],
+            'email' => ['nullable', 'email'],
+            'link' => ['nullable', 'url'],
+            'image' => ['nullable', 'file', 'max:3072', 'mimes:jpeg,jpg,png,webp']
+        ]);
+
+        if($request->hasFile('image')) {
+            $fields['image'] = Storage::disk('public')->put('images/listing', $request->image);
+        }
+
+        $fields['tags']= implode(',',array_unique(array_filter(array_map('trim', explode(',', $request->tags)))));
+
+        $request->user()->listings()->create($fields);
+
+
+        return redirect()->route('dashboard')->with('status', 'Listings created successfully');
+
+
     }
 
     /**
@@ -67,7 +97,7 @@ class ListingController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateListingRequest $request, Listing $listing)
+    public function update(Request $request, Listing $listing)
     {
         //
     }

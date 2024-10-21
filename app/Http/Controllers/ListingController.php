@@ -52,9 +52,6 @@ class ListingController extends Controller
 
 
 
-
-
-
         $fields = $request->validate([
             'title' => ['required', 'max:255'],
             'desc' => ['required'],
@@ -83,7 +80,10 @@ class ListingController extends Controller
      */
     public function show(Listing $listing)
     {
-        //
+        return Inertia::render('Listing/Show', [
+            'listing' => $listing,
+            'user' => $listing->user->only(['name', 'id'])
+        ]);
     }
 
     /**

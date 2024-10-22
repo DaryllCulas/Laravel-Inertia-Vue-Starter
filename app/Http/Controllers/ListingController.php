@@ -91,7 +91,9 @@ class ListingController extends Controller
      */
     public function edit(Listing $listing)
     {
-        //
+        return Inertia::render('Listing/Edit', [
+            'listing' => $listing,
+        ]);
     }
 
     /**

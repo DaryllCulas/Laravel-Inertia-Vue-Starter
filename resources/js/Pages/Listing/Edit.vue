@@ -21,10 +21,6 @@ const form = useForm({
   image: null,
   _method: "PUT",
 });
-const validateTags = (value) => {
-  const regex = /^[a-zA-Z0-9,]+$/;
-  return regex.test(value) || "Tags should only contain letters and numbers.";
-};
 </script>
 
 <template>
@@ -51,7 +47,6 @@ const validateTags = (value) => {
           placeholder="one, two, three"
           v-model="form.tags"
           :error="form.errors.tags"
-          :validate="validateTags"
         />
 
         <TextArea

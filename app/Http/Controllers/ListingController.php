@@ -55,7 +55,7 @@ class ListingController extends Controller
         $fields = $request->validate([
             'title' => ['required', 'max:255'],
             'desc' => ['required'],
-            'tags' => ['nullable', 'string','regex:/^[a-zA-Z0-9\s]+$/'],
+            'tags' => ['nullable', 'string'],
             'email' => ['nullable', 'email'],
             'link' => ['nullable', 'url'],
             'image' => ['nullable', 'file', 'max:3072', 'mimes:jpeg,jpg,png,webp']
@@ -144,6 +144,11 @@ class ListingController extends Controller
      */
     public function destroy(Listing $listing)
     {
-        //
+        if($listing->image) {
+            Storage::disk('public')->delete($listing->image);
+        }
+        $listing->delete();
+
+        return redirect()->route('dashboard')->with('status', 'Listing Deleted Successfully');
     }
 }

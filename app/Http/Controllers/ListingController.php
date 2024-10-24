@@ -158,7 +158,7 @@ class ListingController extends Controller implements HasMiddleware
 
         $fields['tags']= implode(',',array_unique(array_filter(array_map('trim', explode(',', $request->tags)))));
 
-        $listing->update($fields);
+        $listing->update([...$fields, 'approved' => false]);
 
         return redirect()->route('dashboard')->with('status', 'Listings updated successfully');
     }

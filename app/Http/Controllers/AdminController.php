@@ -10,7 +10,11 @@ class AdminController extends Controller
 {
     public function index()
     {
-        $users = User::with('listings')->paginate(10);
+        $users = User::with('listings')
+            ->filter(request(['search']))
+            ->paginate(10)
+            ->withQueryString();
+
         return Inertia::render('Admin/AdminDashboard', [
             'users' => $users,
             'status' => session('status')

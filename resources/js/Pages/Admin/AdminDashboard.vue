@@ -2,17 +2,54 @@
 import PaginationLinks from "../../Components/PaginationLinks.vue";
 import RoleSelect from "../../Components/RoleSelect.vue";
 import SessionMessages from "../../Components/SessionMessages.vue";
+import InputField from "../../Components/InputField.vue";
+import { router, useForm } from "@inertiajs/vue3";
 
 defineProps({
   users: Object,
   status: String,
 });
+
+const params = route().params;
+
+const form = useForm({
+  search: params.search,
+});
+
+const search = () => {
+  router.get(route("admin.index"), {
+    search: form.search,
+  });
+};
 </script>
 <template>
   <Head title="- Admin" />
 
-  <!-- Heading -->
   <SessionMessages :statusMessage="status" />
+
+  <!-- Heading -->
+  <div class="flex items-end justify-between mb-4">
+    <div class="flex items-end gap-2">
+      <!-- Search Form -->
+      <form @submit.prevent="search">
+        <InputField
+          label=""
+          icon="magnifying-glass"
+          placeholder="Search..."
+          v-model="form.search"
+        />
+      </form>
+      <Link
+        class="px-2 py-[6px] rounded-md bg-indigo-500 text-white flex items-center gap-2"
+        v-if="params.search"
+        :href="route('admin.index', { ...params, search: null, page: null })"
+        >{{ params.search }}
+
+        <i class="fa-solid fa-xmark"></i>
+      </Link>
+    </div>
+  </div>
+
   <!-- Table -->
   <table
     class="bg-white dark:bg-slate-800 w-full rounded-lg overflow-hidden ring-1 ring-slate-300"

@@ -11,7 +11,7 @@ class AdminController extends Controller
     public function index()
     {
         $users = User::with('listings')
-            ->filter(request(['search']))
+            ->filter(request(['search', 'user_role']))
             ->paginate(10)
             ->withQueryString();
 

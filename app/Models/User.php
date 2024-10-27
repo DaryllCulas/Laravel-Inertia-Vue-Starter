@@ -68,5 +68,9 @@ class User extends Authenticatable implements MustVerifyEmail
                 ->orWhere('email', 'like', '%'.request('search').'%');
         });
         }
+
+        if($filters['user_role'] ?? false) {
+            $query->where('role', request('user_role'));
+        }
     }
 }

@@ -19,7 +19,26 @@ const form = useForm({
 const search = () => {
   router.get(route("admin.index"), {
     search: form.search,
+    user_role: params.user_role,
   });
+};
+
+const toggleRole = (e) => {
+  if (e.target.checked) {
+    router.get(
+      route("admin.index", {
+        search: params.search,
+        user_role: "suspended",
+      })
+    );
+  } else {
+    router.get(
+      route("admin.index", {
+        search: params.search,
+        user_role: null,
+      })
+    );
+  }
 };
 </script>
 <template>
@@ -47,6 +66,24 @@ const search = () => {
 
         <i class="fa-solid fa-xmark"></i>
       </Link>
+    </div>
+
+    <!-- Toggle RoleB Btn -->
+    <div
+      class="flex items-center gap-1 text-xs hover:bg-slate-300 dark:hover:bg-slate-800 px-2 py-1 rounded-md"
+    >
+      <input
+        @input="toggleRole"
+        :checked="params.user_role"
+        type="checkbox"
+        id="toggleRole"
+        class="rounded-md border-1 outline-0 text-indigo-500 ring-indigo-500 border-slate-700 cursor-pointer"
+      />
+      <label
+        for="toggleRole"
+        class="block text-sm font-medium text-slate-700 dark:text-slate-300 cursor-pointer"
+        >Show suspended users</label
+      >
     </div>
   </div>
 

@@ -42,5 +42,10 @@ class Listing extends Model
             $query->where('tags', 'like', '%' . request('tag') . '%');
         }
 
+        if($filters['disapproved'] ?? false) {
+            $query->where('approved', false);
+        }
+
+
     }
 }

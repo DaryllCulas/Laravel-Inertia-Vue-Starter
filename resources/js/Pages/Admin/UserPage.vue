@@ -22,6 +22,26 @@ const search = () => {
     })
   );
 };
+
+const showDisapproved = (e) => {
+  if (e.target.checked) {
+    router.get(
+      route("user.show", {
+        user: props.user.id,
+        search: params.search,
+        disapproved: true,
+      })
+    );
+  } else {
+    router.get(
+      route("user.show", {
+        user: props.user.id,
+        search: params.search,
+        disapproved: null,
+      })
+    );
+  }
+};
 </script>
 
 <template>
@@ -52,7 +72,23 @@ const search = () => {
           <i class="fa-solid fa-xmark"></i>
         </Link>
       </div>
-      <div>Toggle</div>
+      <!-- Toggle Approve Listing Btn -->
+      <div
+        class="flex items-center gap-1 text-xs hover:bg-slate-300 dark:hover:bg-slate-800 px-2 py-1 rounded-md mb-4"
+      >
+        <input
+          @input="showDisapproved"
+          :checked="params.disapproved"
+          type="checkbox"
+          id="showDisapproved"
+          class="rounded-md border-1 outline-0 text-indigo-500 ring-indigo-500 border-slate-700 cursor-pointer"
+        />
+        <label
+          for="showDisapproved"
+          class="block text-sm font-medium text-slate-700 dark:text-slate-300 cursor-pointer"
+          >Show Disapproved Listings</label
+        >
+      </div>
     </div>
 
     <!-- Table -->

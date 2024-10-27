@@ -25,7 +25,7 @@ class AdminController extends Controller
     {
         $users_listings = $user
             ->listings()
-            ->filter(request(['search']))
+            ->filter(request(['search', 'disapproved']))
             ->latest()
             ->paginate(10)
             ->withQueryString();

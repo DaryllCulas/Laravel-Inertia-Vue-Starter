@@ -3,10 +3,12 @@ import { router, useForm } from "@inertiajs/vue3";
 import Title from "../../Components/Title.vue";
 import InputField from "../../Components/InputField.vue";
 import PaginationLinks from "../../Components/PaginationLinks.vue";
+import SessionMessages from "../../Components/SessionMessages.vue";
 
 const props = defineProps({
   user: Object,
   listings: Object,
+  status: String,
 });
 
 const params = route().params;
@@ -19,6 +21,7 @@ const search = () => {
     route("user.show", {
       user: props.user.id,
       search: form.search,
+      disapproved: params.disapproved,
     })
   );
 };
@@ -42,10 +45,20 @@ const showDisapproved = (e) => {
     );
   }
 };
+
+const toggleApprove = (listing) => {
+  let msg = listing.approved ? "Disapproved this listing?" : "Approve this listing?";
+
+  if (confirm(msg)) {
+    router.put(route("admin.approve", listing.id));
+  }
+};
 </script>
 
 <template>
   <Head :title="`- ${user.name} Listings`" />
+
+  <SessionMessages :statusMessage="status" />
 
   <!-- Heading -->
   <div class="mb-6">
@@ -106,7 +119,7 @@ const showDisapproved = (e) => {
         <tr v-for="listing in listings.data" :key="listing.id">
           <td class="py-5 px-3">{{ listing.title }}</td>
           <td class="py-5 px-3 text-2xl text-center">
-            <button>
+            <button @click.prevent="toggleApprove(listing)">
               <i
                 :class="`fa-solid fa-${
                   listing.approved

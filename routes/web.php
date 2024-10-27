@@ -26,6 +26,7 @@ Route::middleware(['auth', 'verified', Admin::class])
         Route::get('/admin', 'index')->name('admin.index');
         Route::get('/users/{user}', 'show')->name('user.show');
         Route::put('/admin/{user}/role', 'role')->name('admin.role');
+        Route::put('/listing/{listing}/approve', 'approve')->name('admin.approve');
     });
 
 // Auth Routes

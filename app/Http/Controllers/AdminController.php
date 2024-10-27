@@ -23,7 +23,12 @@ class AdminController extends Controller
 
     public function show(User $user)
     {
-        $users_listings = $user->listings()->latest()->paginate(10);
+        $users_listings = $user
+            ->listings()
+            ->filter(request(['search']))
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
 
 
         return Inertia::render('Admin/UserPage',[

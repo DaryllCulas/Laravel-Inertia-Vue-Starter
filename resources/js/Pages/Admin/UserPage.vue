@@ -1,10 +1,27 @@
 <script setup>
+import { router, useForm } from "@inertiajs/vue3";
 import Title from "../../Components/Title.vue";
+import InputField from "../../Components/InputField.vue";
+import PaginationLinks from "../../Components/PaginationLinks.vue";
 
-defineProps({
+const props = defineProps({
   user: Object,
   listings: Object,
 });
+
+const params = route().params;
+const form = useForm({
+  search: params.search,
+});
+
+const search = () => {
+  router.get(
+    route("user.show", {
+      user: props.user.id,
+      search: form.search,
+    })
+  );
+};
 </script>
 
 <template>
@@ -13,8 +30,28 @@ defineProps({
   <!-- Heading -->
   <div class="mb-6">
     <Title>{{ user.name }} latest listings</Title>
-    <div class="flex items-center gap-2">
-      <div>Search</div>
+    <div class="flex items-end justify-between">
+      <div class="flex items-end gap-2 mb-4">
+        <!-- Search Form -->
+        <form @submit.prevent="search">
+          <InputField
+            label=""
+            icon="magnifying-glass"
+            placeholder="Search..."
+            v-model="form.search"
+          />
+        </form>
+        <Link
+          class="px-2 py-[6px] rounded-md bg-indigo-500 text-white flex items-center gap-2"
+          v-if="params.search"
+          :href="
+            route('user.show', { ...params, search: null, page: null, user: user.id })
+          "
+          >{{ params.search }}
+
+          <i class="fa-solid fa-xmark"></i>
+        </Link>
+      </div>
       <div>Toggle</div>
     </div>
 
@@ -53,5 +90,8 @@ defineProps({
         </tr>
       </tbody>
     </table>
+  </div>
+  <div class="mt-6">
+    <PaginationLinks :paginator="listings" />
   </div>
 </template>

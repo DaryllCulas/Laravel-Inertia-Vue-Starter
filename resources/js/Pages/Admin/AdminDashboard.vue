@@ -1,17 +1,18 @@
 <script setup>
 import PaginationLinks from "../../Components/PaginationLinks.vue";
+import RoleSelect from "../../Components/RoleSelect.vue";
+import SessionMessages from "../../Components/SessionMessages.vue";
 
 defineProps({
   users: Object,
+  status: String,
 });
 </script>
 <template>
-  {{ console.log(users) }}
   <Head title="- Admin" />
 
   <!-- Heading -->
-  <div>Heading</div>
-
+  <SessionMessages :statusMessage="status" />
   <!-- Table -->
   <table
     class="bg-white dark:bg-slate-800 w-full rounded-lg overflow-hidden ring-1 ring-slate-300"
@@ -30,7 +31,9 @@ defineProps({
           <p class="font-bold mb-1">{{ user.name }}</p>
           <p class="font-light text-xs">{{ user.email }}</p>
         </td>
-        <td class="w-2/6 py-5 px-3">{{ user.role }}</td>
+        <td class="w-2/6 py-5 px-3">
+          <RoleSelect :user="user" />
+        </td>
         <td class="w-1/6 py-5 px-3">
           <div class="flex items-center gap-1">
             <p>{{ user.listings.filter((list) => list.approved).length }}</p>
